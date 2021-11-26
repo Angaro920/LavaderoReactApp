@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from "axios"
+import { portBackend } from "./portBackend"
 
 const Login = () => {
     const history = useHistory();
@@ -15,7 +16,7 @@ const Login = () => {
     }, [])
 
     const getLoginCredentials = () => {
-        axios.get("http://localhost:8082/api/User/all").then((response) => {
+        axios.get("http://localhost:" + portBackend + "/api/User/all").then((response) => {
             setListCredentials(response.data)
         })
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
 import axios from "axios"
+import { portBackend } from "./portBackend"
 
 const RegistroAuto = () => {
     const [listFunctionaries, setListFunctionaries] = useState([])
@@ -24,25 +24,25 @@ const RegistroAuto = () => {
 
 
     const getFunctionaries = () => {
-        axios.get("http://localhost:8082/api/Funcionario/all").then((response) => {
+        axios.get("http://localhost:" + portBackend + "/api/Funcionario/all").then((response) => {
             setListFunctionaries(response.data)
         })
     }
 
     const getServices = () => {
-        axios.get("http://localhost:8082/api/Servicio/all").then((response) => {
+        axios.get("http://localhost:" + portBackend + "/api/Servicio/all").then((response) => {
             setListServices(response.data)
         })
     }
 
     const getVehicules = () => {
-        axios.get("http://localhost:8082/api/Vehiculo/all").then((response) => {
+        axios.get("http://localhost:" + portBackend + "/api/Vehiculo/all").then((response) => {
             setListVehicules(response.data)
         })
     }
 
     const calculatePrice = () => {
-        axios.get("http://localhost:8082/api/Servicio/" + selections.service).then((response) => {
+        axios.get("http://localhost:" + portBackend + "/api/Servicio/" + selections.service).then((response) => {
             if (selections.vehicule == 1) {
                 setPrice(response.data.price)
             } else if (selections.vehicule == 2) {
@@ -59,7 +59,7 @@ const RegistroAuto = () => {
             fecha: selections.date,
             totalPrice: parseInt(price)
         }
-        axios.post("http://localhost:8082/api/Produccion/save", payload).then((response) => {
+        axios.post("http://localhost:" + portBackend + "/api/Produccion/save", payload).then((response) => {
             window.alert("Registro ingresado correctamente");
         })
     }
