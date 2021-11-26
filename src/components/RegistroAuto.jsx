@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import axios from "axios"
 
@@ -23,25 +24,25 @@ const RegistroAuto = () => {
 
 
     const getFunctionaries = () => {
-        axios.get("http://localhost:8081/api/Funcionario/all").then((response) => {
+        axios.get("http://localhost:8082/api/Funcionario/all").then((response) => {
             setListFunctionaries(response.data)
         })
     }
 
     const getServices = () => {
-        axios.get("http://localhost:8081/api/Servicio/all").then((response) => {
+        axios.get("http://localhost:8082/api/Servicio/all").then((response) => {
             setListServices(response.data)
         })
     }
 
     const getVehicules = () => {
-        axios.get("http://localhost:8081/api/Vehiculo/all").then((response) => {
+        axios.get("http://localhost:8082/api/Vehiculo/all").then((response) => {
             setListVehicules(response.data)
         })
     }
 
     const calculatePrice = () => {
-        axios.get("http://localhost:8081/api/Servicio/" + selections.service).then((response) => {
+        axios.get("http://localhost:8082/api/Servicio/" + selections.service).then((response) => {
             if (selections.vehicule == 1) {
                 setPrice(response.data.price)
             } else if (selections.vehicule == 2) {
@@ -58,7 +59,7 @@ const RegistroAuto = () => {
             fecha: selections.date,
             totalPrice: parseInt(price)
         }
-        axios.post("http://localhost:8081/api/Produccion/save", payload).then((response) => {
+        axios.post("http://localhost:8082/api/Produccion/save", payload).then((response) => {
             window.alert("Registro ingresado correctamente");
         })
     }
@@ -138,9 +139,15 @@ const RegistroAuto = () => {
                     <input type="button" name="Registrar" value="Registrar" id="Registrar"
                         onClick={registerData} />
                 </div>
+                <div style={{ marginTop: "15px" }}>
+                    <Link to="/search" >
+                        <button>Ir a listado de Autos</button>
+                    </Link>
+                </div>
             </form>
 
         </section>
+
         </div>
     )
 }

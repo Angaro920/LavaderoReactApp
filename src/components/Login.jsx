@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from "axios"
 
-
 const Login = () => {
-
-    const[listIniciar,setListIniciar]=useState([])
-    
-    useEffect(()=>{
-        getIniciar()
-    },[])
-
-    const getIniciar = () => {
-        axios.get("http://localhost:8081/api/Produccion/all").then((response) => {
-        setListIniciar(response.data)
+    const history = useHistory();
+    const [listCredentials, setListCredentials] = useState([])
+    const [userData, setUserData] = useState({
+        user: "",
+        password: ""
     })
-}
+
+    useEffect(() => {
+        getLoginCredentials()
+    }, [])
+
+    const getLoginCredentials = () => {
+        axios.get("http://localhost:8082/api/User/all").then((response) => {
+            setListCredentials(response.data)
+        })
+    }
+
+    const verifyUser = () => {
+        const { user, password } = userData
+        if (listCredentials.some(({ name, pass }) => name === user && pass === password)) {
+            window.alert("Inicio de sesion realizado correctamente");
+            history.push("/registroAuto");
+        } else {
+            window.alert("No se encuentran las credenciales");
+
+        }
+    }
 
     return (
         <section className="registro">
@@ -22,14 +37,15 @@ const Login = () => {
                 <h5 className="form-title">Formulario Login</h5>
                 <div className="form-group my-3">
                     <label htmlFor="">Usuario</label>
-                    <input type="text" name="usuario" placeholder="Digite su nombre de usuario" />
+                    <input type="text" name="usuario" placeholder="Digite su nombre de usuario"
+                        onChange={(event) => setUserData({ ...userData, user: event.target.value })} />
                 </div>
                 <div className="form-group my-3">
                     <label htmlFor="">Contraseña</label>
-                    <input type="password" name="contraseña" value="" placeholder="Digite su contraseña" />
+                    <input type="password" name="contraseña" placeholder="Digite su contraseña"
+                        onChange={(event) => { setUserData({ ...userData, password: event.target.value }) }} />
                 </div>
-                <input type="submit" name="" value="Ingresar" />
-                <p><a href="/html/FormRegistro.html">¿No tienes cuenta?Registrate</a> </p>
+                <input type="submit" name="" value="Ingresar" onClick={verifyUser} />
             </form>
         </section>
     )

@@ -4,14 +4,29 @@ import axios from "axios"
 const Search = () => {
 
     const [listSearch, setListSearch] = useState([])
+    const [listFunctionaries, setListFunctionaries] = useState([])
+    const [listServices, setListServices] = useState([])
 
     useEffect(()=>{
         getSearch()
+        getFunctionaries()
+        getServices()
     },[])
 
     const getSearch = () => {
-            axios.get("http://localhost:8081/api/Produccion/all").then((response) => {
+            axios.get("http://localhost:8082/api/Produccion/all").then((response) => {
             setListSearch(response.data)
+        })
+    }
+    const getFunctionaries = () => {
+        axios.get("http://localhost:8082/api/Funcionario/all").then((response) => {
+            setListFunctionaries(response.data)
+        })
+    }
+
+    const getServices = () => {
+        axios.get("http://localhost:8082/api/Servicio/all").then((response) => {
+            setListServices(response.data)
         })
     }
 
@@ -25,20 +40,24 @@ const Search = () => {
                         <td>Desde:</td>
                         <td><input type="text" id="min" name="min" /></td>
                         <td><select class="select-table-filter" data-table="order-table">
-                            <option selected="true" value="">Todos los funcionarios</option>
-                            <option value="Gabriel">Hari Namakura</option>
-                            <option value="Diego">Diego Angarita</option>
-                            <option value="Juan"> Esteban Ayala</option>
-                            <option value="Fernanda">Fernanda</option>
+                            <option selected="true" value="" >Todos los funcionarios</option>
+                            {
+                            listFunctionaries && listFunctionaries.map((functionary) =>
+                                <option value={functionary.id}>{functionary.name}</option>
+                            )
+                        }
                         </select></td>
                     </tr>
                     <tr>
                         <td>Hasta:</td>
                         <td><input type="text" id="max" name="max" /></td>
                         <td><select type="search" class="select-table-filter" data-table="order-table">
-                            <option selected="true" value="">Seleccione Servicio</option>
-                            <option value="lavado">Lavado</option>
-                            <option value="secado">Secado</option>
+                        <option>Todos los servicios</option>
+                        {
+                            listServices && listServices.map((service) =>
+                                <option value={service.id}>{service.name}</option>
+                            )
+                        }
                         </select></td>
                     </tr>
 
