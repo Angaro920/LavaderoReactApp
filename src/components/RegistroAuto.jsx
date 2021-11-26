@@ -43,9 +43,9 @@ const RegistroAuto = () => {
 
     const calculatePrice = () => {
         axios.get("http://localhost:" + portBackend + "/api/Servicio/" + selections.service).then((response) => {
-            if (selections.vehicule == 1) {
+            if (parseInt(selections.vehicule) === 1) {
                 setPrice(response.data.price)
-            } else if (selections.vehicule == 2) {
+            } else if (parseInt(selections.vehicule) === 2) {
                 setPrice(response.data.price + ((response.data.price * 10) / 100))
             }
         })
